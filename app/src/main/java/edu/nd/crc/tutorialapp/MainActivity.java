@@ -1,10 +1,13 @@
 package edu.nd.crc.tutorialapp;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     public final static String EXTRA_MESSAGE = "edu.nd.crc.tutorialapp.MESSAGE";
@@ -20,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         //settings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         //settings.setAppCacheEnabled(false);
         //webView.clearCache(true);
+        webView.addJavascriptInterface(this, "Hue");
 
         webView.loadUrl("file:///android_asset/map.html");
     }
@@ -34,5 +38,14 @@ public class MainActivity extends AppCompatActivity {
                     webView.loadUrl("javascript:if(mymap.hasLayer(mycircle)){mymap.removeLayer(mycircle);} else {mymap.addLayer(mycircle);}");
                 }
             });
+    }
+
+    @JavascriptInterface
+    public void showToast(String text) {
+        Context context = getApplicationContext();
+        int duration = Toast.LENGTH_SHORT;
+
+        Toast toast = Toast.makeText(context, text, duration);
+        toast.show();
     }
 }
